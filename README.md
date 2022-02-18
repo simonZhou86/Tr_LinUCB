@@ -53,4 +53,8 @@ exit 0;
 
 ```
 
+# Citation
 
+If you are using our code, please cite our paper:
+
+**"Truncated LinUCB for Stochastic Linear Bandits"**, Yanglei Song and Meng Zhou
