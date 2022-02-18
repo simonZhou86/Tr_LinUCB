@@ -24,6 +24,8 @@ Users can define their own value for the parameters.
 
 Copy the below lines to a .sh file and submit through compute canada by sbatch your_file.sh
 
+or you could refer to the cc-scripts folder for other useful scripts
+
 ```shell
 #!/bin/bash
 #
