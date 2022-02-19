@@ -52,7 +52,7 @@ or you could refer to the cc_scripts folder for other useful scripts
 #SBATCH --error=ERROR FILE OUTPUT DIRECTORY
 #SBATCH --verbose
 
-cd YOUR PATH OF THE CODE
+cd YOUR PATH FOR THE CODE
 
 module load python
 module load scipy-stack
