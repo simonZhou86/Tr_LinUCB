@@ -26,7 +26,7 @@ You have to first comment out line 231 and modify the variable "ncpus" based on 
 ```python
 python3 tr_linucb.py --T X --kappa X --k X --d X --lmd X --m2 X --sigma_e X --case X
 ```
-where the default setting is T=10000, kappa=2.0, k=2, d=4, lmd=0.1, m2=1, sigma_e=0.5 and case=1
+where the default setting is $`T=10000`$, kappa=2.0, k=2, d=4, lmd=0.1, m2=1, sigma_e=0.5 and case=1
 
 Users can define their own value for the parameters and replace X.
 
