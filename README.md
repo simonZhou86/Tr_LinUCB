@@ -31,10 +31,9 @@ where the default setting is `T=10000, kappa=2.0, k=2, d=4, lmd=0.1, m2=1, sigma
 
 Users can define their own value for the parameters and replace X.
 
-```
 
 # Citation
 
-If you are using our code, please cite our paper:
+If you are using our code, please cite the following paper:
 
 **"Truncated LinUCB for Stochastic Linear Bandits"**, Yanglei Song and Meng Zhou
