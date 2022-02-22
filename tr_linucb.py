@@ -243,7 +243,7 @@ def simulate(T, kappa, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch):
 def parse_opt():
     parser = argparse.ArgumentParser()
     parser.add_argument('--T', type=int, default=10000, help="number of time horizon")
-    parser.add_argument('--kappa', type=float, default = 2.0, help="power for OFUL rounds")
+    parser.add_argument('--kappa', type=float, default = 2.0, help="power for LinUCB rounds")
     parser.add_argument('--k', type=int, default=2, help="number of arms")
     parser.add_argument('--d', type=int, default=4, help="number of covairates(with intercept)")
     parser.add_argument('--lmd', type=float, default = 0.1, help="lambda value")
