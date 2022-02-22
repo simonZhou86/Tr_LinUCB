@@ -25,9 +25,13 @@ pip install matplotlib
 You have to first comment out line 231 and modify the variable "ncpus" based on your environment in line 234. After that, you can simple run the following script in the command line:
 
 ```python
-python3 tr_linucb.py --T X --kappa X --k X --d X --lmd X --m2 X --sigma_e X --arm_para_noise 0
+python3 tr_linucb.py --T X --kappa X --k X --d X --lmd X --m2 X --sigma_e X --arm_para_noise X
 ```
-where the default setting is `T=10000, kappa=2.0, k=2, d=4, lmd=0.1, m2=1, sigma_e=0.5 and arm_para_noise=0
+where the default setting is `T=10000, kappa=2.0, k=2, d=4, lmd=0.1, m2=1, sigma_e=0.5 and arm_para_noise=0`. Note that `arm_para_noise` only takes the binary value either 0 or 1. Use the following code to show the arguments descriptions:
+
+```python
+python3 tr_linucb.py -h
+```
 
 Users can define their own value for the parameters and replace X.
 
