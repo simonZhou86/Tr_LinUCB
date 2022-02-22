@@ -8,7 +8,7 @@ from concurrent.futures import ThreadPoolExecutor,as_completed,wait,ALL_COMPLETE
 import threading
 import argparse
 
-def oful_with_exploite(T, kappa1, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch, case):
+def oful_with_exploite(T, kappa1, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch):
     '''
     @params:
     T: time horizon
@@ -40,16 +40,12 @@ def oful_with_exploite(T, kappa1, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, 
     if arm_para_noise == 1:
         arm_para = np.random.normal(0,1, size = (k, d)) # k*d matrix
     else:
-        if case == 1: # same as stated in Bastani et al. mostly exploration free, mixture
-            indicator = np.random.random()
-            if indicator > 0.5:
-                arm_para = np.random.multivariate_normal(-np.ones(d), np.eye(d), k)
-            else:
-                arm_para = np.random.multivariate_normal(np.ones(d), np.eye(d), k)
-        elif case == 2:
-            arm_para = np.random.multivariate_normal(np.ones(d), np.eye(d), k) # case 2: ~N(1d, 1d)
-        elif case == 3:
-            arm_para = np.random.multivariate_normal(np.zeros(d), np.eye(d), k) # case 3: ~N(0d, 1d)
+        # mixture distribution
+        indicator = np.random.random()
+        if indicator > 0.5:
+            arm_para = np.random.multivariate_normal(-np.ones(d), np.eye(d), k)
+        else:
+            arm_para = np.random.multivariate_normal(np.ones(d), np.eye(d), k)
 
     
     # arm estimation, k*d matrix
@@ -72,7 +68,7 @@ def oful_with_exploite(T, kappa1, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, 
     t = 0
     while t < rounds and switch == 0:
         ######################  Run LinUCB algorithm ##########################
-        X_ = np.random.multivariate_normal(np.zeros((d)), np.eye(d), 1) # (1*d) context
+        X_ = np.random.multivariate_normal(np.zeros((d)), 0.5*np.eye(d), 1) # (1*d) context
         X = np.clip(X_, -xmax, xmax)
         #X = X_ / np.sqrt(np.sum(X_**2))
         X[0][0] = 1 # intercept
@@ -140,7 +136,7 @@ def oful_with_exploite(T, kappa1, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, 
 
     ###################################### Run Pure Exploit Algotithm ######################################
     for t in range(changet, T):
-        X_ = np.random.multivariate_normal(np.zeros((d)), np.eye(d), 1) # (1*d) context
+        X_ = np.random.multivariate_normal(np.zeros((d)), 0.5*np.eye(d), 1) # (1*d) context
         X = np.clip(X_, -xmax, xmax)
         #X = X_ / np.sqrt(np.sum(X_**2))
         X[0][0] = 1 # intercept
@@ -188,7 +184,7 @@ def oful_with_exploite(T, kappa1, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, 
     
     return regret_vec
 
-def draw(rsltMean, rsltStd, T, k, p, case):
+def draw(rsltMean, rsltStd, T, k, p):
     plt.figure(figsize=(10,10))
     x = list(range(len(rsltMean)))
     y = rsltMean
@@ -199,19 +195,19 @@ def draw(rsltMean, rsltStd, T, k, p, case):
     plt.ylabel("Regret")
     #plt.ylim(0, 120)
     plt.legend(loc = "lower right")
-    plt.savefig("./figures/kappa_{}_T_{}_case_{}.jpg".format(p, T, case))
+    plt.savefig("./figures/kappa_{}_T_{}.jpg".format(p, T))
 
-def runOnce(total_regret_vec, T, kappa1, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch, case, i):
+def runOnce(total_regret_vec, T, kappa1, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch, i):
     lock = threading.Lock()
     #total_regret_vec = np.zeros((1000, T))
-    temp_reg = oful_with_exploite(T, kappa1, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch, case)
+    temp_reg = oful_with_exploite(T, kappa1, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch)
     # when write data in the array, a thread lock is required
     lock.acquire()
     total_regret_vec[i,:] = temp_reg
     lock.release()
 
 
-def simulate(T, kappa, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch, case):
+def simulate(T, kappa, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch):
     np.random.seed(41)
     # T = 100000
     # kappa1 = 1.1
@@ -228,20 +224,19 @@ def simulate(T, kappa, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch, cas
     num2 = 0
     num_simu = 1000
     #total_regret_vec = np.zeros((num_simu, T))
-    #ncpus = int(os.environ.get('SLURM_CPUS_PER_TASK',default=10))
-    ncpus = 10
+    ncpus = int(os.environ.get('SLURM_CPUS_PER_TASK',default=10))
     total_regret_vec = np.zeros((num_simu, T))
     # enable multi-thread
     with ThreadPoolExecutor(max_workers=ncpus) as executor:
-        task_all = [executor.submit(runOnce, total_regret_vec, T, kappa, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch, case, i) for i in range(num_simu)]
+        task_all = [executor.submit(runOnce, total_regret_vec, T, kappa, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch, i) for i in range(num_simu)]
         for future in as_completed(task_all):
             data = future.result()
             num2 += 1
             print("get executor {} success".format(num2))
     mean_regret_vec = np.mean(total_regret_vec, axis=0)
     std_regret_vec = np.std(total_regret_vec, axis=0) / math.sqrt(num_simu) # error bar
-    pd.DataFrame(mean_regret_vec).to_csv("./mean_value_T_{}_case_{}_ka_{}_trlucb_norm.csv".format(T, case, kappa), header=None, index=False)
-    pd.DataFrame(std_regret_vec).to_csv("./std_value_T_{}_case_{}_ka_{}_trlucb_norm.csv".format(T, case, kappa), header=None, index=False)
+    pd.DataFrame(mean_regret_vec).to_csv("./mean_value_T_{}_ka_{}_trlucb_norm.csv".format(T, kappa), header=None, index=False)
+    pd.DataFrame(std_regret_vec).to_csv("./std_value_T_{}_ka_{}_trlucb_norm.csv".format(T, kappa), header=None, index=False)
     #draw(mean_regret_vec, std_regret_vec, T, k, p, case)
 
 
@@ -257,7 +252,6 @@ def parse_opt():
     parser.add_argument('--xmax', type=int, default=1, help="for truncated value from context distribution")
     parser.add_argument('--arm_para_noise', type=int, default=0, help="whether to use correct noise")
     parser.add_argument('--switch', type=int, default=0, help="indicator to switch to pure exploit from OFUL")
-    parser.add_argument('--case', type=int, default = 1, help="which arm paramater to use")
     opt = parser.parse_args()
     return opt
 
