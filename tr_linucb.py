@@ -228,7 +228,8 @@ def simulate(T, kappa, k, d, lmd, m2, sigma_e, xmax, arm_para_noise, switch, cas
     num2 = 0
     num_simu = 1000
     #total_regret_vec = np.zeros((num_simu, T))
-    ncpus = int(os.environ.get('SLURM_CPUS_PER_TASK',default=10))
+    #ncpus = int(os.environ.get('SLURM_CPUS_PER_TASK',default=10))
+    ncpus = 10
     total_regret_vec = np.zeros((num_simu, T))
     # enable multi-thread
     with ThreadPoolExecutor(max_workers=ncpus) as executor:
