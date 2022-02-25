@@ -6,8 +6,7 @@ This repository includes python scripts for running the Tr-LinUCB algorithm. The
 
 # Files
 
-The algorithm for Tr-LinUCB and LinUCB (resp. to `S = T`) is in the file tr_linucb.py. For Greedy First and OLS bandit algorithm in the paper, please refer to:
-[Mostly Exploration-Free Algorithms for Contextual Bandits, Hamsa Bastani, Mohsen Bayati, and Khashayar Khosravi, Forthcoming in Management Science](https://github.com/khashayarkhv/contextual-bandits)
+The algorithm for Tr-LinUCB and LinUCB (resp. to `S = T`) is in the file tr_linucb.py. For Greedy First and OLS bandit algorithm in the paper, please refer to the code of the paper: [Mostly Exploration-Free Algorithms for Contextual Bandits, Hamsa Bastani, Mohsen Bayati, and Khashayar Khosravi, Forthcoming in Management Science](https://github.com/khashayarkhv/contextual-bandits)
 
 # Usage
 
