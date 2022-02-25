@@ -2,7 +2,7 @@
 
 This repository includes python scripts for running the Tr-LinUCB algorithm. The code has been used to generate the result in the paper:
 
-**“Truncated LinUCB for Stochastic Linear Bandits”**, Yanglei Song and Meng Zhou
+[**Truncated LinUCB for Stochastic Linear Bandits**](https://arxiv.org/abs/2202.11735), Yanglei Song and Meng Zhou
 
 # Files
 
@@ -40,4 +40,4 @@ You may define your own value for the parameters and replace `X`.
 
 If you are using our code, please cite the following paper:
 
-**"Truncated LinUCB for Stochastic Linear Bandits"**, Yanglei Song and Meng Zhou
+[**Truncated LinUCB for Stochastic Linear Bandits**](https://arxiv.org/abs/2202.11735), Yanglei Song and Meng Zhou
