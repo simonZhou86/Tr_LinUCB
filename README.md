@@ -43,12 +43,10 @@ If you are using our code, please cite the following paper:
 [**Truncated LinUCB for Stochastic Linear Bandits**](https://arxiv.org/abs/2202.11735), Yanglei Song and Meng Zhou
 
 ```bibtex
-@misc{song2022truncated,
-      title={Truncated LinUCB for Stochastic Linear Bandits}, 
-      author={Yanglei Song and Meng zhou},
-      year={2022},
-      eprint={2202.11735},
-      archivePrefix={arXiv},
-      primaryClass={stat.ML}
+@article{song2022truncated,
+  title={Truncated LinUCB for Stochastic Linear Bandits},
+  author={Song, Yanglei and Meng Zhou},
+  journal={arXiv preprint arXiv:2202.11735},
+  year={2022}
 }
 ```
