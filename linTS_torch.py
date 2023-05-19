@@ -60,7 +60,7 @@ def LinTS(T, k, d, R, delta, sigma_e, xmax, arm_para_noise, case):
     for t in range(T):
         X_ = dist.multivariate_normal.MultivariateNormal(torch.zeros(d), torch.eye(d)).sample().type(torch.float64) # size: d,
         X_ = X_.unsqueeze(0) # size: 1,d
-        X = np.clip(X_, -xmax, xmax)
+        X = torch.clip(X_, -xmax, xmax)
         X[0,0] = 1 # intercept
         x = X.transpose(0,1) # size: d,1
         
