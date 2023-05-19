@@ -21,6 +21,7 @@ pip install pandas
 pip install numpy
 pip install matplotlib
 ```
+For torch, please visit [the official website](https://pytorch.org/get-started/locally/) to download the latest version.
 
 You have to first comment out line 231 and modify the variable "ncpus" based on your environment in line 234. After that, you can simple run the following script in the command line:
 
